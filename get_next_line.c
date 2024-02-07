@@ -6,27 +6,33 @@
 /*   By: sixshooterx <sixshooterx@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:06:12 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/07 13:10:00 by sixshooterx      ###   ########.fr       */
+/*   Updated: 2024/02/07 14:13:21 by sixshooterx      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*read_from_file(int fd)
+char	*read_from_file(int fd, char *line)
 {
 	char	*buffer;
 	int		bytes_read;
+	int		i;
 
+	i = 0;
 	buffer = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (!buffer)
 		return (NULL);
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	if (bytes_read <= 0)
+	while (!(ft_strchr(line, '\n')))
 	{
-		free(buffer);
-		return (NULL);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read <= 0)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		line = ft_strjoin(line, buffer);
 	}
-	return (buffer);
+	return (line);
 }
 
 char	*get_next_line(int fd)
@@ -34,15 +40,13 @@ char	*get_next_line(int fd)
 	static char	*line;
 	char		*ptr;
 
-	ptr = read_from_file(fd);
+	ptr = read_from_file(fd, line);
 	if (!ptr)
 		return (NULL);
-	ft_strjoin(line, ptr);
+	line = ptr;
 	free(ptr);
 	return (line);
 }
-
-
 
 int	main(void)
 {

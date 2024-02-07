@@ -6,7 +6,7 @@
 /*   By: sixshooterx <sixshooterx@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 10:32:00 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/07 12:23:24 by sixshooterx      ###   ########.fr       */
+/*   Updated: 2024/02/07 14:16:18 by sixshooterx      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,23 @@ void	ft_bzero(void *s, size_t n)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*ptr;
-	int		i;
-	int		j;
+	size_t	i;
+	size_t	j;
 
-	ptr = malloc((ft_strlen(s1) + ft_strlen(s2)) * sizeof(char));
-	i = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	ptr = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
+	if (!ptr)
+		return (NULL);
+	i = -1;
 	j = 0;
-	while (s1[i] != '\0')
-	{
+	while (s1[++i] != '\0')
 		ptr[i] = s1[i];
-		i++;
-	}
 	while (s2[j] != '\0')
 	{
 		ptr[i + j] = s2[j];
 		j++;
 	}
-	ptr[i + j] = '\0';
 	return (ptr);
 }
 
@@ -78,3 +78,36 @@ int	ft_strlen(const char *s)
 	}
 	return (i);
 }
+
+char	*ft_strchr(const char *s, int c)
+{
+	int				i;
+	unsigned char	target;
+
+	i = 0;
+	target = (unsigned char)c;
+	while (s[i] != '\0')
+	{
+		if (s[i] == target)
+		{
+			return ((char *)&s[i]);
+		}
+		i++;
+	}
+	if (target == '\0')
+	{
+		return ((char *)&s[i]);
+	}
+	return (NULL);
+}
+
+// int main(void)
+// {
+// 	char *str1 = "b ahoj";
+// 	char *str2 = " svete";
+// 	char *ptr;
+
+// 	ptr = ft_strjoin(str1, str2);
+
+// 	printf("%s", ptr);
+// }
