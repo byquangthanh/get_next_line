@@ -6,7 +6,7 @@
 /*   By: sixshooterx <sixshooterx@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 10:32:00 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/07 14:16:18 by sixshooterx      ###   ########.fr       */
+/*   Updated: 2024/02/08 10:44:52 by sixshooterx      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,47 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)&s[i]);
 	}
 	return (NULL);
+}
+
+char	*split_next_line(char	*str)
+{
+	int		i;
+	int		j;
+	char	*ptr;
+
+	i = 0;
+	j = 0;
+	while(str[i] != '\0' && str[i] != '\n')
+		i++;
+	ptr = ft_calloc(i + 1, sizeof(char));
+	if(!ptr)
+		return (NULL);
+	while(i > j)
+	{
+		ptr[j] = str[j];
+		j++;
+	}
+	return ptr;
+}
+
+char	*ft_strdup(const char *s1)
+{
+	int		i;
+	char	*ptr;
+
+	i = 0;
+	ptr = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
+	if (ptr == NULL)
+	{
+		return (NULL);
+	}
+	while (s1[i] != '\0')
+	{
+		ptr[i] = s1[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }
 
 // int main(void)
