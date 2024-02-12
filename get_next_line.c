@@ -6,11 +6,31 @@
 /*   By: sixshooterx <sixshooterx@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:06:12 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/08 10:48:06 by sixshooterx      ###   ########.fr       */
+/*   Updated: 2024/02/08 20:58:38 by sixshooterx      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_strdup(const char *s1)
+{
+	int		i;
+	char	*ptr;
+
+	i = 0;
+	ptr = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
+	if (ptr == NULL)
+	{
+		return (NULL);
+	}
+	while (s1[i] != '\0')
+	{
+		ptr[i] = s1[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
+}
 
 char	*read_from_file(int fd, char *line)
 {
@@ -33,39 +53,40 @@ char	*read_from_file(int fd, char *line)
 	return (line);
 }
 
-char *get_next_line(int fd) {
-	static char	*remainder = NULL; // Holds data across calls.
-	char		*line = NULL; // The next line to return.
-	char		*new_remainder_position; // Position after the newline to start the next remainder.
-	char		*temp; // Temporary pointer for operations.
-
+char	*ensure_remainder_initialized(char *remainder)
+{
 	if (!remainder)
-		remainder = ft_calloc(1, sizeof(char)); // Ensure initialized.
+		remainder = ft_calloc(1, sizeof(char));
+	return (remainder);
+}
 
-	// Read and accumulate content into 'remainder'.
+char	*get_next_line(int fd)
+{
+	static char	*remainder;
+	char		*line;
+	char		*new_remainder_position;
+	char		*temp;
+
+	line = NULL;
+	remainder = NULL;
+	remainder = ensure_remainder_initialized(remainder);
 	remainder = read_from_file(fd, remainder);
-
-	// If read_from_file returns NULL, either an error occurred, or we reached EOF without any data.
 	if (!remainder)
-		return NULL; // Nothing more to read or an error happened.
-
-	// Use split_next_line to get the next line from remainder.
+		return (NULL);
 	line = split_next_line(remainder);
-
-	// Find the position of the newline character in the remainder.
 	new_remainder_position = ft_strchr(remainder, '\n');
-
-	// Prepare the remainder for the next call.
-	if (new_remainder_position) {
-		temp = ft_strdup(new_remainder_position + 1); // Create a new remainder starting after the newline.
-		free(remainder); // Free the old remainder.
-		remainder = temp; // Update the static remainder.
-	} else {
-		free(remainder); // If there's no newline, we've processed all content.
+	if (new_remainder_position)
+	{
+		temp = ft_strdup(new_remainder_position + 1);
+		free(remainder);
+		remainder = temp;
+	}
+	else
+	{
+		free(remainder);
 		remainder = NULL;
 	}
-
-	return line; // Return the extracted line.
+	return (line);
 }
 
 

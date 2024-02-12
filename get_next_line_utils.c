@@ -6,7 +6,7 @@
 /*   By: sixshooterx <sixshooterx@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 10:32:00 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/08 10:44:52 by sixshooterx      ###   ########.fr       */
+/*   Updated: 2024/02/12 12:58:32 by sixshooterx      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*ptr;
+	char	*temp_ptr;
+	size_t	i;
+	size_t	total_size;
 
+	i = 0;
 	if (size && count > SIZE_MAX / size)
 		return (NULL);
 	if (size == 0 || count == 0)
@@ -23,25 +27,17 @@ void	*ft_calloc(size_t count, size_t size)
 		count = 1;
 		size = 1;
 	}
-	ptr = (void *)malloc(count * size);
+	total_size = count * size;
+	ptr = malloc(total_size);
 	if (!ptr)
 		return (NULL);
-	ft_bzero(ptr, count * size);
-	return (ptr);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	char	*ptr;
-	size_t	i;
-
-	i = 0;
-	ptr = s;
-	while (i < n)
+	temp_ptr = ptr;
+	while (i < (total_size))
 	{
-		ptr[i] = 0;
+		temp_ptr[i] = 0;
 		i++;
 	}
+	return (temp_ptr);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -90,7 +86,7 @@ char	*ft_strchr(const char *s, int c)
 	{
 		if (s[i] == target)
 		{
-			return ((char *)&s[i]);
+			return ((char *)&s[i + 1]);
 		}
 		i++;
 	}
@@ -109,46 +105,28 @@ char	*split_next_line(char	*str)
 
 	i = 0;
 	j = 0;
-	while(str[i] != '\0' && str[i] != '\n')
+	while (str[i] != '\0' && str[i] != '\n')
+		i++;
+	if (str[i] == '\n')
 		i++;
 	ptr = ft_calloc(i + 1, sizeof(char));
-	if(!ptr)
+	if (!ptr)
 		return (NULL);
-	while(i > j)
+	while (i > j)
 	{
 		ptr[j] = str[j];
 		j++;
 	}
-	return ptr;
-}
-
-char	*ft_strdup(const char *s1)
-{
-	int		i;
-	char	*ptr;
-
-	i = 0;
-	ptr = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
-	if (ptr == NULL)
-	{
-		return (NULL);
-	}
-	while (s1[i] != '\0')
-	{
-		ptr[i] = s1[i];
-		i++;
-	}
-	ptr[i] = '\0';
 	return (ptr);
 }
 
-// int main(void)
-// {
-// 	char *str1 = "b ahoj";
-// 	char *str2 = " svete";
-// 	char *ptr;
+int main(void)
+{
+	char *str1 = "b ahoj";
+	char *str2 = " svete";
+	char *ptr;
 
-// 	ptr = ft_strjoin(str1, str2);
+	ptr = ft_strchr(str1, 'h');
 
-// 	printf("%s", ptr);
-// }
+	printf("%s", ptr);
+}
