@@ -3,3 +3,19 @@ cus
 adowjadoawjd
 awodkawodawawkdo
 aowdkoo
+
+
+awodkawodawawkdo
+
+wakdow kdwo
+
+kwdo
+
+
+
+--
+
+get_next_line
+
+\n
+

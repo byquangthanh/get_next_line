@@ -6,7 +6,7 @@
 /*   By: sixshooterx <sixshooterx@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 10:32:00 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/12 12:58:32 by sixshooterx      ###   ########.fr       */
+/*   Updated: 2024/02/12 13:14:48 by sixshooterx      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*ft_strchr(const char *s, int c)
 	{
 		if (s[i] == target)
 		{
-			return ((char *)&s[i + 1]);
+			return ((char *)&s[i]);
 		}
 		i++;
 	}
@@ -120,13 +120,13 @@ char	*split_next_line(char	*str)
 	return (ptr);
 }
 
-int main(void)
-{
-	char *str1 = "b ahoj";
-	char *str2 = " svete";
-	char *ptr;
+// int main(void)
+// {
+// 	char *str1 = "b ahoj";
+// 	char *str2 = " svete";
+// 	char *ptr;
 
-	ptr = ft_strchr(str1, 'h');
+// 	ptr = ft_strchr(str1, 'h');
 
-	printf("%s", ptr);
-}
+// 	printf("%s", ptr);
+// }

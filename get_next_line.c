@@ -6,7 +6,7 @@
 /*   By: sixshooterx <sixshooterx@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:06:12 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/08 20:58:38 by sixshooterx      ###   ########.fr       */
+/*   Updated: 2024/02/12 13:13:33 by sixshooterx      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ char	*get_next_line(int fd)
 	char		*temp;
 
 	line = NULL;
-	remainder = NULL;
 	remainder = ensure_remainder_initialized(remainder);
 	remainder = read_from_file(fd, remainder);
 	if (!remainder)
