@@ -6,7 +6,7 @@
 /*   By: quanguye <quanguye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:06:12 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/15 14:19:21 by quanguye         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:06:31 by quanguye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ char	*ft_strdup(char *s1)
 
 char	*read_from_file(int fd, char *line)
 {
-	char	buffer[BUFFER_SIZE + 1];
-	int		bytes_read;
-	char	*temp;
+	static char	buffer[BUFFER_SIZE];
+	int			bytes_read;
+	char		*temp;
 
 	if (!line)
 	{
@@ -90,29 +90,29 @@ char	*get_next_line(int fd)
 }
 
 
-int	main(void)
-{
-	int  fd;
-	char *line;
-	int  count;
+// int	main(void)
+// {
+// 	int  fd;
+// 	char *line;
+// 	int  count;
 
-	count = 0;
-	fd = open("example.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Error opening file");
-		return (1);
-	}
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (line == NULL)
-			break ;
-		count++;
-		printf("[%d]:%s\n", count, line);
-		free(line);
-		line = NULL;
-	}
-	close(fd);
-	return (0);
-}
+// 	count = 0;
+// 	fd = open("example.txt", O_RDONLY);
+// 	if (fd == -1)
+// 	{
+// 		printf("Error opening file");
+// 		return (1);
+// 	}
+// 	while (1)
+// 	{
+// 		line = get_next_line(fd);
+// 		if (line == NULL)
+// 			break ;
+// 		count++;
+// 		printf("[%d]:%s\n", count, line);
+// 		free(line);
+// 		line = NULL;
+// 	}
+// 	close(fd);
+// 	return (0);
+// }
