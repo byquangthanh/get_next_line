@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sixshooterx <sixshooterx@student.42.fr>    +#+  +:+       +#+        */
+/*   By: quanguye <quanguye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:06:12 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/12 13:13:33 by sixshooterx      ###   ########.fr       */
+/*   Updated: 2024/02/15 14:19:21 by quanguye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(char *s1)
 {
 	int		i;
 	char	*ptr;
@@ -20,9 +20,7 @@ char	*ft_strdup(const char *s1)
 	i = 0;
 	ptr = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
 	if (ptr == NULL)
-	{
 		return (NULL);
-	}
 	while (s1[i] != '\0')
 	{
 		ptr[i] = s1[i];
@@ -34,30 +32,33 @@ char	*ft_strdup(const char *s1)
 
 char	*read_from_file(int fd, char *line)
 {
-	char	*buffer;
+	char	buffer[BUFFER_SIZE + 1];
 	int		bytes_read;
+	char	*temp;
 
-	buffer = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!buffer)
-		return (NULL);
+	if (!line)
+	{
+		line = malloc(1 * sizeof(char));
+		if (!line)
+			return (NULL);
+		line[0] = '\0';
+	}
 	while (!(ft_strchr(line, '\n')))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read <= 0)
 		{
-			free(buffer);
+			free(line);
 			return (NULL);
 		}
-		line = ft_strjoin(line, buffer);
+		buffer[bytes_read] = '\0';
+		temp = ft_strjoin(line, buffer);
+		free(line);
+		if (!temp)
+			return (NULL);
+		line = temp;
 	}
 	return (line);
-}
-
-char	*ensure_remainder_initialized(char *remainder)
-{
-	if (!remainder)
-		remainder = ft_calloc(1, sizeof(char));
-	return (remainder);
 }
 
 char	*get_next_line(int fd)
@@ -67,8 +68,8 @@ char	*get_next_line(int fd)
 	char		*new_remainder_position;
 	char		*temp;
 
-	line = NULL;
-	remainder = ensure_remainder_initialized(remainder);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
 	remainder = read_from_file(fd, remainder);
 	if (!remainder)
 		return (NULL);

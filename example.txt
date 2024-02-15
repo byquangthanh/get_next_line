@@ -16,6 +16,3 @@ kwdo
 --
 
 get_next_line
-
-\n
-
