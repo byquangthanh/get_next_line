@@ -6,7 +6,7 @@
 /*   By: quanguye <quanguye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:09:46 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/15 14:19:24 by quanguye         ###   ########.fr       */
+/*   Updated: 2024/02/16 13:36:47 by quanguye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdint.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 4
+# endif
 
 char	*get_next_line(int fd);
 // void	*ft_calloc(size_t count, size_t size);

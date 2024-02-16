@@ -6,7 +6,7 @@
 /*   By: quanguye <quanguye@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:06:12 by sixshooterx       #+#    #+#             */
-/*   Updated: 2024/02/15 15:06:31 by quanguye         ###   ########.fr       */
+/*   Updated: 2024/02/16 13:35:28 by quanguye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,54 +30,69 @@ char	*ft_strdup(char *s1)
 	return (ptr);
 }
 
+char	*handle_eof_or_error(char *line)
+{
+	free(line);
+	return (NULL);
+}
+
 char	*read_from_file(int fd, char *line)
 {
-	static char	buffer[BUFFER_SIZE];
+	static char	buffer[BUFFER_SIZE + 1];
 	int			bytes_read;
 	char		*temp;
 
-	if (!line)
-	{
-		line = malloc(1 * sizeof(char));
-		if (!line)
-			return (NULL);
-		line[0] = '\0';
-	}
-	while (!(ft_strchr(line, '\n')))
+	while (1)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
-		{
-			free(line);
-			return (NULL);
-		}
+		if (bytes_read < 0)
+			return (handle_eof_or_error(line));
 		buffer[bytes_read] = '\0';
+		if (bytes_read == 0 && *line == '\0')
+			return (handle_eof_or_error(line));
+		if (bytes_read == 0)
+			break ;
 		temp = ft_strjoin(line, buffer);
 		free(line);
 		if (!temp)
 			return (NULL);
 		line = temp;
+		if (ft_strchr(buffer, '\n'))
+			break ;
 	}
 	return (line);
+}
+
+char	*initiliaze_remainder(char *remainder)
+{
+	if (!remainder)
+	{
+		remainder = malloc(1);
+		if (!remainder)
+			return (NULL);
+		remainder[0] = '\0';
+	}
+	return (remainder);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*remainder;
 	char		*line;
-	char		*new_remainder_position;
+	char		*new_line_position;
 	char		*temp;
 
+	remainder = initiliaze_remainder(remainder);
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
+		return (NULL);
 	remainder = read_from_file(fd, remainder);
 	if (!remainder)
 		return (NULL);
 	line = split_next_line(remainder);
-	new_remainder_position = ft_strchr(remainder, '\n');
-	if (new_remainder_position)
+	new_line_position = ft_strchr(remainder, '\n');
+	if (new_line_position)
 	{
-		temp = ft_strdup(new_remainder_position + 1);
+		temp = ft_strdup(new_line_position + 1);
 		free(remainder);
 		remainder = temp;
 	}
@@ -89,30 +104,29 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
+int	main(void)
+{
+	int  fd;
+	char *line;
+	int  count;
 
-// int	main(void)
-// {
-// 	int  fd;
-// 	char *line;
-// 	int  count;
-
-// 	count = 0;
-// 	fd = open("example.txt", O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		printf("Error opening file");
-// 		return (1);
-// 	}
-// 	while (1)
-// 	{
-// 		line = get_next_line(fd);
-// 		if (line == NULL)
-// 			break ;
-// 		count++;
-// 		printf("[%d]:%s\n", count, line);
-// 		free(line);
-// 		line = NULL;
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
+	count = 0;
+	fd = open("example.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		printf("Error opening file");
+		return (1);
+	}
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (line == NULL)
+			break ;
+		count++;
+		printf("[%d]:%s\n", count, line);
+		free(line);
+		line = NULL;
+	}
+	close(fd);
+	return (0);
+}
